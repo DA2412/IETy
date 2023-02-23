@@ -1,4 +1,7 @@
 # IETy
+<p align="center">
+<img src="https://github.com/DA2412/IET/blob/master/logo_IETy.png"  width=50% height=50% align=top>
+</p>
 
 This is the Python version of [IET](https://github.com/DA2412/IET_Inverse_Equilibrium_Tool) code which allows to compute the coil currents needed to obtain a predetermined plasma shape with defined plasma global parameters by solving a constrained minimization problem. The journal publication of IET code can be found [here](https://iopscience.iop.org/article/10.1088/1361-6587/ab3f09).
 
