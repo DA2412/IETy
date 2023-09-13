@@ -55,7 +55,7 @@ def fun_Field_Loop(source, points):
 
         uno = np.multiply(1e-7*kk,(ZZ-z0))
         due = np.multiply(RR,np.sqrt(r0*RR))
-        tre = -J1+ np.divide((r0-RR)**2+(ZZ-z0)**2 , ((r0-RR)**2+(ZZ-z0)**2))
+        tre = -J1+ np.divide(r0**2+RR**2+(ZZ-z0)**2 , ((r0-RR)**2+(ZZ-z0)**2))
         quattro = J2  
         res_br= np.multiply(np.multiply(np.divide(uno,due),tre),quattro)
         
