@@ -42,10 +42,11 @@ def fun_Field_Loop(source, points):
         #print("{}/{}".format(jj,ncoil-1))
         r0=source['R'][jj]
         z0=source['Z'][jj]
-        kk=np.sqrt(np.divide(4*np.multiply(r0,RR),((r0+RR)**2+(ZZ-z0)**2)))
+        aa = np.sqrt((r0+RR)**2+(ZZ-z0)**2) #a
+        kk=np.sqrt(np.divide(4*np.multiply(r0,RR),aa**2)) #k
         #[J1,J2] = ellipke(kk.^2);
         from scipy.special import ellipk,ellipe
-        J1=ellipk(kk**2)
+        J1 = ellipk(kk**2)
         J2 = ellipe(kk**2)
 
         B = np.multiply((1-kk**2/2),J1)-J2
@@ -53,11 +54,22 @@ def fun_Field_Loop(source, points):
         res_a = np.multiply(np.multiply(np.divide(4e-7,kk),np.sqrt(r0/RR)),B)
         res_psi=  np.multiply(res_a,2*np.pi*RR)
 
-        uno = np.multiply(1e-7*kk,(ZZ-z0))
-        due = np.multiply(RR,np.sqrt(r0*RR))
-        tre = -J1+ np.divide(r0**2+RR**2+(ZZ-z0)**2 , ((r0-RR)**2+(ZZ-z0)**2))
-        quattro = J2  
-        res_br= np.multiply(np.multiply(np.divide(uno,due),tre),quattro)
+        # uno=np.divide((z0-ZZ),(aa*RR))
+        # due=J1 - np.divide((2-kk**2),2*np.sqrt(1-kk**2))*J2
+        # res_br= np.multiply(uno,due)
+        
+        uno = np.divide(1e-7*kk*(ZZ-z0),RR*np.sqrt(RR*r0))
+        due = np.divide((r0**2+RR**2+(ZZ-z0)**2),((r0-RR)**2+(ZZ-z0)**2))
+        tre = -J1 + due*J2
+        res_br= np.multiply(uno,tre)
+        
+        # uno = np.multiply(1e-7*kk,(ZZ-z0))
+        # due = np.multiply(RR,np.sqrt(r0*RR))
+        # tre = -J1+ np.divide(r0**2+RR**2+(ZZ-z0)**2 , ((r0-RR)**2+(ZZ-z0)**2))
+        # quattro = J2  
+        # res_br= np.multiply(np.multiply(np.divide(uno,due),tre),quattro)
+        
+        # res_bz=RR*J1-np.multiply(np.divide((2*RR-np.multiply((r0+RR),kk**2)),(2*np.sqrt(1-kk**2))),J2)
         
         uno = np.divide(1e-7*kk,np.sqrt(r0*RR))
         due = np.divide((r0**2-RR**2-(ZZ-z0)**2) , ((r0-RR)**2+(ZZ-z0)**2))
@@ -78,8 +90,9 @@ def fun_Field_Loop(source, points):
         for  jj in range(0,ncoil):
             r0=source['R'][jj]
             z0=source['Z'][jj]
-            bz[ind_axis,jj]=(4e-7*np.pi*r0**2)/(2*(r0**2+(ZZ[ind_axis]-z0)**2)**1.5)
-    
+            # bz[ind_axis,jj]=(4e-7*np.pi*r0**2)/(2*(r0**2+(ZZ[ind_axis]-z0)**2)**1.5)
+            bz[ind_axis,jj]=(4e-7*np.pi*r0**2)/(2*(r0**2+(z0-ZZ[ind_axis])**2)**1.5)
+
     #%% Output
     #out = {"G_a",a ,"G_br", br, "G_bz",  bz, "G_psi", psi}
     return a,br,bz,psi
@@ -136,7 +149,7 @@ def fun_Field_Coil( source, points, NGauss ):
     res_psi=np.zeros([npt,ncoil])
 
     for jj in range(0,ncoil):
-        #print("{}/{}".format(jj,ncoil-1))
+        print("{}/{}".format(jj,ncoil-1))
         r0=source_R[jj]
         z0=source_Z[jj]
         dr=source_DR[jj]
