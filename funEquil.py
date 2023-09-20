@@ -51,7 +51,7 @@ def fun_Field_Loop(source, points):
 
         B = np.multiply((1-kk**2/2),J1)-J2
        
-        res_a = np.multiply(np.multiply(np.divide(4e-7,kk),np.sqrt(r0/RR)),B)
+        res_a = np.multiply(np.multiply(4e-7/kk,np.sqrt(r0/RR)),B)
         res_psi=  np.multiply(res_a,2*np.pi*RR)
 
         # uno=np.divide((z0-ZZ),(aa*RR))
